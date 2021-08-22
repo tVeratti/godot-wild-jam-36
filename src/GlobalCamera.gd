@@ -2,10 +2,11 @@ extends Node
 
 const TOLERANCE:float = 0.1
 const SPEED:float = 50.0
-const DISTANCE:Vector3 = Vector3(0, 20.0, 20.0)
+const DISTANCE:Vector3 = Vector3(0, 5.0, 0.0)
 
 var camera:Camera
 var target:Spatial
+var anchor:Spatial
 
 var ray_origin
 var ray_end
@@ -21,12 +22,12 @@ func _process(delta):
 		var offset = Vector3.ONE
 			
 		# Move the camera to the target tile (x, y)
-		var anchor = target.global_transform.origin
-		if camera.translation.distance_to(anchor) >= TOLERANCE:
+		var anchor_origin = anchor.global_transform.origin
+		if camera.translation.distance_to(anchor_origin) >= TOLERANCE:
 			camera.translation = Vector3(\
-			lerp(camera.translation.x, anchor.x + DISTANCE.x, SPEED * delta),\
-			lerp(camera.translation.y, anchor.y + DISTANCE.y, SPEED * delta),
-			lerp(camera.translation.z, anchor.z + DISTANCE.z, SPEED * delta))
+			lerp(camera.translation.x, anchor_origin.x + DISTANCE.x, SPEED * delta),\
+			lerp(camera.translation.y, anchor_origin.y + DISTANCE.y, SPEED * delta),
+			lerp(camera.translation.z, anchor_origin.z + DISTANCE.z, SPEED * delta))
 
 
 func _unhandled_input(event):
@@ -50,3 +51,6 @@ func set_camera(new_camera:Camera):
 
 func set_target(new_target):
 	target = new_target
+
+func set_anchor(new_anchor):
+	anchor = new_anchor

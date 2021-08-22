@@ -21,12 +21,14 @@ _global_script_class_icons={
 [application]
 
 config/name="Godot-wild-jam-36"
-run/main_scene="res://Map.tscn"
+run/main_scene="res://Map/Map.tscn"
 config/icon="res://icon.png"
 
 [autoload]
 
 GlobalCamera="*res://GlobalCamera.gd"
+Signals="*res://Signals.gd"
+State="*res://State.gd"
 
 [input]
 
@@ -59,6 +61,9 @@ beam={
 [physics]
 
 common/enable_pause_aware_picking=true
+3d/default_gravity=0.0
+3d/default_linear_damp=0.0
+3d/default_angular_damp=0.0
 
 [rendering]
 

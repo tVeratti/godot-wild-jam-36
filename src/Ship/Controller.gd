@@ -25,41 +25,34 @@ var is_jumping:bool = false
 func _input(event):    
 	if event is InputEventMouseMotion:
 		mouse_delta = event.relative
-	
-
-func process_input():
-	if controls_blocked: return
-	
-#	is_right_down = Input.is_mouse_button_pressed(BUTTON_RIGHT)
-#	is_jumping = Input.is_action_just_pressed(Actions.JUMP)
-	
-	if Input.is_action_pressed(Actions.FORWARD):
-		direction += facing[2]
-#	if Input.is_action_pressed(Actions.BACKWARD):
-#		direction += facing[2]
-#	if Input.is_action_pressed(Actions.RIGHT):
-#		direction += facing[0]
-#	if Input.is_action_pressed(Actions.LEFT):
-#		 direction -= facing[0]
 
 
-func get_velocity(delta, rocket):
+func get_velocity(delta, ship:RigidBody, rocket:Spatial, rocket_power:float):
 	facing = rocket.global_transform.basis
 	velocity = Vector3.ZERO
 	
-	if Input.is_action_pressed(Actions.FORWARD):
+	if Input.is_action_pressed(Actions.BACKWARD):
+		velocity = -ship.linear_velocity
+		return velocity.normalized() * 0.5
+		
+	if Input.is_mouse_button_pressed(BUTTON_LEFT):
 		velocity += facing[2]
+		return velocity.normalized() * rocket_power
 	
-	return velocity.normalized()
+	return velocity
 
 
-func get_rotation(delta, body):
+func get_rotation(delta, ship, body):
 	var torque:Vector3 = Vector3.ZERO
 	
+	if Input.is_action_pressed(Actions.BACKWARD):
+		return -ship.angular_velocity
+		
 	if Input.is_action_pressed(Actions.RIGHT):
 		torque = Vector3.UP * -1
 	if Input.is_action_pressed(Actions.LEFT):
 		torque = Vector3.UP
+	
 		
 	return torque
 	

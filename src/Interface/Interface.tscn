@@ -1,0 +1,77 @@
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://Interface/Interface.gd" type="Script" id=1]
+
+[node name="Interface" type="CanvasLayer"]
+script = ExtResource( 1 )
+score_path = NodePath("Main/Layout/Bottom/Margin/Stats/Score")
+collisions_path = NodePath("Main/Layout/Bottom/Margin/Stats/Collisions")
+value_path = NodePath("Main/Layout/Bottom/Margin/Stats/Value")
+
+[node name="Main" type="MarginContainer" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2
+custom_constants/margin_right = 20
+custom_constants/margin_top = 20
+custom_constants/margin_left = 20
+custom_constants/margin_bottom = 20
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Layout" type="VBoxContainer" parent="Main"]
+margin_left = 20.0
+margin_top = 20.0
+margin_right = 1004.0
+margin_bottom = 580.0
+mouse_filter = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="Spring" type="Control" parent="Main/Layout"]
+margin_right = 984.0
+margin_bottom = 506.0
+mouse_filter = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="Bottom" type="VBoxContainer" parent="Main/Layout"]
+margin_top = 510.0
+margin_right = 984.0
+margin_bottom = 560.0
+mouse_filter = 2
+
+[node name="Label" type="Label" parent="Main/Layout/Bottom"]
+margin_right = 984.0
+margin_bottom = 14.0
+text = "Debris"
+
+[node name="Margin" type="MarginContainer" parent="Main/Layout/Bottom"]
+margin_top = 18.0
+margin_right = 984.0
+margin_bottom = 50.0
+mouse_filter = 2
+
+[node name="Stats" type="VBoxContainer" parent="Main/Layout/Bottom/Margin"]
+margin_right = 984.0
+margin_bottom = 32.0
+mouse_filter = 2
+
+[node name="Score" type="Label" parent="Main/Layout/Bottom/Margin/Stats"]
+margin_right = 984.0
+margin_bottom = 14.0
+text = "Cleared: 0"
+
+[node name="Collisions" type="Label" parent="Main/Layout/Bottom/Margin/Stats"]
+visible = false
+margin_top = 18.0
+margin_right = 984.0
+margin_bottom = 32.0
+text = "Collisions: 0"
+
+[node name="Value" type="Label" parent="Main/Layout/Bottom/Margin/Stats"]
+margin_top = 18.0
+margin_right = 984.0
+margin_bottom = 32.0
+text = "Value: $0"

@@ -1,0 +1,15 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+path="res://.import/nyoom.mp3-811701733220904ccd434751260e5fa4.mp3str"
+
+[deps]
+
+source_file="res://Assets/nyoom.mp3"
+dest_files=[ "res://.import/nyoom.mp3-811701733220904ccd434751260e5fa4.mp3str" ]
+
+[params]
+
+loop=false
+loop_offset=0
