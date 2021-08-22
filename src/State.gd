@@ -8,8 +8,12 @@ var ship:RigidBody # player
 var debris_value:float = 0.0
 var debris_collisions:int = 0
 
+var bounds = 80
+var no_break = false
+
 
 func _ready():
+	
 	Signals.connect("debris_scored", self, "_on_debris_scored")
 	Signals.connect("debris_collision", self, "_on_debris_collision")
 

@@ -107,13 +107,13 @@ func _physics_process(delta):
 	var position = global_transform.origin
 	var do_teleport = false
 	if not teleport_timer.time_left > 0:
-		if abs(position.x) > MAX_POSITION:
-			var offset = MAX_POSITION - position.x
+		if abs(position.x) > State.bounds:
+			var offset = State.bounds - position.x
 			var new_x = (position.x - offset) * -1
 			global_transform.origin = Vector3(new_x, 0, position.z)
 			do_teleport = true
-		elif(position.z) > MAX_POSITION:
-			var offset = MAX_POSITION - position.z
+		elif(position.z) > State.bounds:
+			var offset = State.bounds - position.z
 			var new_z = (position.z - offset) * -1
 			global_transform.origin = Vector3(position.x, 0, new_z)
 			do_teleport = true
@@ -149,7 +149,7 @@ func _on_Debris_body_entered(body):
 		value -= (value / 10.0)
 		
 		# Check if the debris breaks apart
-		if initial_scale > 0.2:
+		if initial_scale > 0.2 and State.no_break == false:
 			var collision_speed = (body.linear_velocity + linear_velocity).length()
 			var mass_difference = mass / body.mass
 			var collision_strength = collision_speed * mass_difference
@@ -160,9 +160,10 @@ func _on_Debris_body_entered(body):
 				Signals.emit_signal("debris_broken", self, children)
 				queue_free()
 	
-	var pitch = rng.randf_range(-1, 1)
-	_collision_audio.pitch_scale += pitch
-	_collision_audio.play(0.5)
+	if not State.no_break:
+		var pitch = rng.randf_range(-1, 1)
+		_collision_audio.pitch_scale += pitch
+		_collision_audio.play(0.5)
 	
 	Signals.emit_signal("debris_collision", self, body)
 
@@ -171,7 +172,7 @@ func get_broken_child(other):
 	var child = {
 		'initial_scale': initial_scale / 2.1,
 		'origin': global_transform.origin,
-		'initial_linear_velocity': linear_velocity.reflect(other.linear_velocity) * mass
+		'initial_linear_velocity': linear_velocity.reflect(other.linear_velocity.normalized())
 	}
 	return child
 

@@ -12,9 +12,10 @@ func _ready():
 
 func _process(delta):
 	if Visibility.is_on_screen():
-		# Render the 2d root according to the 3d translation.
-		var screen_position = GlobalCamera.camera.unproject_position(global_transform.origin)
-		Display.set_position(Vector2(screen_position.x , screen_position.y))
+		if GlobalCamera.camera != null:
+			# Render the 2d root according to the 3d translation.
+			var screen_position = GlobalCamera.camera.unproject_position(global_transform.origin)
+			Display.set_position(Vector2(screen_position.x , screen_position.y))
 
 
 func set_visible(value):

@@ -14,6 +14,15 @@ var intersection
 var mouse_intersection
 var mouse_position
 
+func _ready():
+	instant()
+
+
+func instant():
+	if anchor != null and camera != null:
+		camera.translation = anchor.global_transform.origin
+		camera.look_at(target.global_transform.origin, Vector3.UP)
+
 
 func _process(delta):
 	if camera != null and target != null:
@@ -35,14 +44,15 @@ func _unhandled_input(event):
 	ray_end = null
 	
 	
-func _physics_process(delta): 
-	mouse_position = get_viewport().get_mouse_position()
-	ray_origin = camera.project_ray_origin(mouse_position)
-	ray_end = ray_origin + camera.project_ray_normal(mouse_position) * 3000
-	
-	var space_state = camera.get_world().direct_space_state
-	intersection = space_state.intersect_ray(ray_origin, ray_end)
-	mouse_intersection = space_state.intersect_ray(ray_origin, ray_end, [], 16)
+func _physics_process(delta):
+	if camera != null:
+		mouse_position = get_viewport().get_mouse_position()
+		ray_origin = camera.project_ray_origin(mouse_position)
+		ray_end = ray_origin + camera.project_ray_normal(mouse_position) * 3000
+		
+		var space_state = camera.get_world().direct_space_state
+		intersection = space_state.intersect_ray(ray_origin, ray_end)
+		mouse_intersection = space_state.intersect_ray(ray_origin, ray_end, [], 16)
 
 
 func set_camera(new_camera:Camera):

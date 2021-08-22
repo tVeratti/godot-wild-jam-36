@@ -35,7 +35,7 @@ func get_velocity(delta, ship:RigidBody, rocket:Spatial, rocket_power:float):
 		velocity = -ship.linear_velocity
 		return velocity.normalized() * 0.5
 		
-	if Input.is_mouse_button_pressed(BUTTON_LEFT):
+	if Input.is_action_pressed(Actions.FORWARD):
 		velocity += facing[2]
 		return velocity.normalized() * rocket_power
 	

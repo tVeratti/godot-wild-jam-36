@@ -9,7 +9,9 @@ const BEAM_COLOR_OFF = Color("0040ff3f")
 onready var _controller = $Controller
 
 #onready var power_line = $Body/LineRenderer
-var rocket_power:float = 0.0
+var rocket_power:float = 6.0
+
+var spawn_origin:Vector3
 
 onready var _body = $Body
 onready var _rocket_mesh = $Body/Rocket
@@ -21,6 +23,7 @@ onready var _wing_rocket_bloom_right = $Body/Wing/Rocket2/RocketLight
 
 onready var _beam_audio:AudioStreamPlayer3D = $BeamAudio
 onready var _tween:Tween = $Tween
+onready var _tele_timer:Timer = $TeleportTimer
 
 var _beaming:bool = false
 var _beam_target:Spatial # Debris within range to beam
@@ -49,6 +52,9 @@ var rotation_angle:float = 0.0
 func _ready():
 	GlobalCamera.set_target(self)
 	GlobalCamera.set_anchor($CameraAnchor)
+	GlobalCamera.instant()
+	
+	spawn_origin = global_transform.origin
 	
 	Signals.connect("debris_removed", self, "_on_debris_removed")
 	Signals.connect("debris_collision", self, "_on_debris_collision")
@@ -67,15 +73,22 @@ func _input(event):
 
 func _physics_process(delta):
 	var intersection =  GlobalCamera.mouse_intersection
-	if intersection.empty(): return
+	if not intersection.empty():
+	#	rocket_power = clamp(intersection.position.distance_to(global_transform.origin), 0, 10.0)
+	#	power_line.points = [_rocket_mesh.global_transform.origin, intersection.position]
+		
+		rotation_angle = get_rotation_angle(intersection.position)	
+		_rocket_mesh.rotation.y = rotation_angle #+ PI
+		_arrow.rotation.y = rotation_angle
 	
-	rocket_power = clamp(intersection.position.distance_to(global_transform.origin), 0, 10.0)
-#	power_line.points = [_rocket_mesh.global_transform.origin, intersection.position]
-	
-	rotation_angle = get_rotation_angle(intersection.position)	
-	_rocket_mesh.rotation.y = rotation_angle #+ PI
-	_arrow.rotation.y = rotation_angle
-	
+	# Check out-of-bounds
+	var position = global_transform.origin
+	var bounds =  State.bounds + 20
+	if abs(position.x) > bounds or abs(position.z) > bounds:
+		mode = MODE_KINEMATIC
+		global_transform.origin = spawn_origin
+		_tele_timer.start(0.2)
+
 	if _beam_active != null:
 		beam_line.visible = true
 		beam_line.points = [beam_origin.global_transform.origin, _beam_active.global_transform.origin]
@@ -194,3 +207,7 @@ func _on_debris_scored(debris):
 
 func _on_Tween_tween_all_completed():
 	beam_visual.visible = _beaming
+
+
+func _on_TeleportTimer_timeout():
+	mode = MODE_RIGID

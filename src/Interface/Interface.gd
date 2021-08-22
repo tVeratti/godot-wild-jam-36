@@ -18,10 +18,11 @@ func _ready():
 
 
 func update_score():
-	var debris_count = get_tree().get_nodes_in_group("debris").size()
-	score.text = "Remaining: %s" % String(debris_count)
-	collisions.text = "Collisions: %s" % String(State.debris_collisions)
-	value.text = "Value Saved: $%s" % String(State.debris_value)
+	if is_inside_tree():
+		var debris_count = get_tree().get_nodes_in_group("debris").size()
+		score.text = "Remaining: %s" % String(debris_count)
+		collisions.text = "Collisions: %s" % String(State.debris_collisions)
+		value.text = "Value Saved: $%s" % String(State.debris_value)
 	
 
 func _on_score_changed():
