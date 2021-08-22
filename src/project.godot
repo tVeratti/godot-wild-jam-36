@@ -20,8 +20,9 @@ _global_script_class_icons={
 
 [application]
 
-config/name="Godot-wild-jam-36"
+config/name="Kessler Cleanup"
 run/main_scene="res://Main.tscn"
+boot_splash/image="res://Assets/Wildling_noBG_v1.png"
 config/icon="res://icon.png"
 
 [autoload]
